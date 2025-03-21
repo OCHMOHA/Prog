@@ -1,0 +1,121 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Node structure
+struct Node {
+    string name;
+    int amount;
+    double salary;
+    Node* next;
+};
+
+// Function to add element
+void AddFirst(Node*& Head, string name, int amount, double salary) {
+    Node* NewNode = new Node{name, amount, salary, Head};
+    Head = NewNode;
+}
+
+// Function to add element
+void AddLast(Node*& Head, string name, int amount, double salary) {
+    if (Head == nullptr) {
+        AddFirst(Head, name, amount, salary);
+        return;
+    }
+    Node* tmp = Head;
+    while (tmp->next) tmp = tmp->next;
+    tmp->next = new Node{name, amount, salary, nullptr};
+}
+
+// Function to add an element after a given node
+bool AddAfter(Node* Head, string name, int amount, double salary, string NameAfter) {
+    Node* tmp = Head;
+    while (tmp && tmp->name != NameAfter) tmp = tmp->next;
+    if (!tmp) return false;
+    tmp->next = new Node{name, amount, salary, tmp->next};
+    return true;
+}
+
+// Function to add an element before a given node
+bool AddBefore(Node*& Head, string name, int amount, double salary, string NameBefore) {
+    if (!Head) return false;
+    if (Head->name == NameBefore) {
+        AddFirst(Head, name, amount, salary);
+        return true;
+    }
+    Node* prev = nullptr;
+    Node* tmp = Head;
+    while (tmp && tmp->name != NameBefore) {
+        prev = tmp;
+        tmp = tmp->next;
+    }
+    if (!tmp) return false;
+    prev->next = new Node{name, amount, salary, tmp};
+    return true;
+}
+
+// Function to delete an element by name
+bool DelNode(Node*& Head, string DelName) {
+    if (!Head) return false;
+    if (Head->name == DelName) {
+        Node* tmp = Head;
+        Head = Head->next;
+        delete tmp;
+        return true;
+    }
+    Node* prev = Head;
+    Node* tmp = Head->next;
+    while (tmp && tmp->name != DelName) {
+        prev = tmp;
+        tmp = tmp->next;
+    }
+    if (!tmp) return false;
+    prev->next = tmp->next;
+    delete tmp;
+    return true;
+}
+
+// Display the list
+void PrintList(Node* Head) {
+    if (!Head) {
+        cout << "The list is empty.\n";
+        return;
+    }
+    Node* tmp = Head;
+    while (tmp) {
+        cout << "Product: " << tmp->name
+             << "\nAmount: " << tmp->amount
+             << "\nSalary: " << tmp->salary << "\n\n";
+        tmp = tmp->next;
+    }
+}
+
+// Main function
+int main() {
+    Node* Head = nullptr;
+
+    // Initial List
+    AddLast(Head, "Alice", 30, 50000);
+    AddLast(Head, "Bob", 25, 45000);
+    AddFirst(Head, "Charlie", 35, 55000);
+    
+    cout << "Initial List:\n";
+    PrintList(Head);
+
+    // Add David after Alice
+    if (AddAfter(Head, "David", 28, 48000, "Alice"))
+        cout << "\nList after adding David after Alice:\n";
+    PrintList(Head);
+
+    // Add Eve before Bob
+    if (AddBefore(Head, "Eve", 22, 43000, "Bob"))
+        cout << "\nList after adding Eve before Bob:\n";
+    PrintList(Head);
+
+    // Delete Alice
+    if (DelNode(Head, "Alice"))
+        cout << "\nList after deleting Alice:\n";
+    PrintList(Head);
+
+    return 0;
+}
