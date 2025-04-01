@@ -2,16 +2,16 @@
 
 using namespace std;
 
-// Class to represent a vector
+
 class vect {
 private:
-    int dim;          // Dimension of the vector
-    double* a;        // Array to store vector elements
-    static int count; // Static counter for object tracking
-    int num;          // Unique number for each vector instance
+    int dim;          
+    double* a;        
+    static int count; 
+    int num;          // Unique number for each
 
 public:
-    // Constructor
+    
     vect(int d = 3) : dim(d) {
         a = new double[dim];
         num = ++count;
@@ -19,7 +19,7 @@ public:
         cout << "Vector " << num << " created.\n";
     }
 
-    // Copy Constructor
+   
     vect(const vect& v) : dim(v.dim) {
         a = new double[dim];
         num = ++count;
@@ -27,7 +27,7 @@ public:
         cout << "Vector " << num << " copied from vector " << v.num << ".\n";
     }
 
-    // Destructor
+   
     ~vect() {
         cout << "Vector " << num << " destroyed.\n";
         delete[] a;
@@ -45,7 +45,7 @@ public:
         return *this;
     }
 
-    // Vector Addition
+    
     vect operator+(const vect& v) const {
         vect result(dim);
         for (int i = 0; i < dim; i++) result.a[i] = a[i] + v.a[i];
@@ -53,7 +53,7 @@ public:
         return result;
     }
 
-    // Vector Subtraction
+    
     vect operator-(const vect& v) const {
         vect result(dim);
         for (int i = 0; i < dim; i++) result.a[i] = a[i] - v.a[i];
@@ -61,7 +61,7 @@ public:
         return result;
     }
 
-    // Negation
+  
     vect operator-() const {
         vect result(dim);
         for (int i = 0; i < dim; i++) result.a[i] = -a[i];
@@ -69,7 +69,7 @@ public:
         return result;
     }
 
-    // Dot Product
+   
     double operator*(const vect& v) const {
         double result = 0;
         for (int i = 0; i < dim; i++) result += a[i] * v.a[i];
@@ -77,7 +77,7 @@ public:
         return result;
     }
 
-    // Scalar Multiplication
+  
     vect operator*(double k) const {
         vect result(dim);
         for (int i = 0; i < dim; i++) result.a[i] = a[i] * k;
@@ -85,7 +85,7 @@ public:
         return result;
     }
 
-    // Output Operator
+  
     friend ostream& operator<<(ostream& os, const vect& v) {
         os << "(";
         for (int i = 0; i < v.dim; i++) os << v.a[i] << (i < v.dim - 1 ? ", " : "");
@@ -97,16 +97,16 @@ public:
 // Initialize static counter
 int vect::count = 0;
 
-// Class to represent a matrix
+
 class matr {
 private:
-    int dim;          // Matrix dimension
-    double** b;       // 2D array for storing matrix elements
-    static int count; // Static counter for tracking objects
+    int dim;         
+    double** b;      
+    static int count; 
     int num;          // Unique matrix number
 
 public:
-    // Constructor
+
     matr(int d = 3) : dim(d) {
         b = new double*[dim];
         for (int i = 0; i < dim; i++) {
@@ -117,7 +117,7 @@ public:
         cout << "Matrix " << num << " created.\n";
     }
 
-    // Copy Constructor
+   
     matr(const matr& m) : dim(m.dim) {
         b = new double*[dim];
         num = ++count;
@@ -128,14 +128,14 @@ public:
         cout << "Matrix " << num << " copied.\n";
     }
 
-    // Destructor
+
     ~matr() {
         for (int i = 0; i < dim; i++) delete[] b[i];
         delete[] b;
         cout << "Matrix " << num << " destroyed.\n";
     }
 
-    // Matrix Addition
+
     matr operator+(const matr& m) const {
         matr result(dim);
         for (int i = 0; i < dim; i++)
@@ -145,7 +145,7 @@ public:
         return result;
     }
 
-    // Matrix Subtraction
+   
     matr operator-(const matr& m) const {
         matr result(dim);
         for (int i = 0; i < dim; i++)
@@ -155,7 +155,7 @@ public:
         return result;
     }
 
-    // Matrix Multiplication
+   
     matr operator*(const matr& m) const {
         matr result(dim);
         for (int i = 0; i < dim; i++)
@@ -176,7 +176,7 @@ public:
         return result;
     }
 
-    // Output Operator
+    // Output
     friend ostream& operator<<(ostream& os, const matr& m) {
         for (int i = 0; i < m.dim; i++) {
             for (int j = 0; j < m.dim; j++)
@@ -190,7 +190,7 @@ public:
 // Initialize static counter
 int matr::count = 0;
 
-// Main function
+
 int main() {
     vect v1(3), v2(3);
     matr m1(3), m2(3);
