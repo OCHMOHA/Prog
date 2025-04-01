@@ -1,0 +1,214 @@
+#include <iostream>
+
+using namespace std;
+
+// Class to represent a vector
+class vect {
+private:
+    int dim;          // Dimension of the vector
+    double* a;        // Array to store vector elements
+    static int count; // Static counter for object tracking
+    int num;          // Unique number for each vector instance
+
+public:
+    // Constructor
+    vect(int d = 3) : dim(d) {
+        a = new double[dim];
+        num = ++count;
+        for (int i = 0; i < dim; i++) a[i] = 0; // Initialize elements to zero
+        cout << "Vector " << num << " created.\n";
+    }
+
+    // Copy Constructor
+    vect(const vect& v) : dim(v.dim) {
+        a = new double[dim];
+        num = ++count;
+        for (int i = 0; i < dim; i++) a[i] = v.a[i];
+        cout << "Vector " << num << " copied from vector " << v.num << ".\n";
+    }
+
+    // Destructor
+    ~vect() {
+        cout << "Vector " << num << " destroyed.\n";
+        delete[] a;
+    }
+
+    // Assignment Operator
+    vect& operator=(const vect& v) {
+        if (this != &v) {
+            delete[] a;
+            dim = v.dim;
+            a = new double[dim];
+            for (int i = 0; i < dim; i++) a[i] = v.a[i];
+            cout << "Vector " << num << " assigned from vector " << v.num << ".\n";
+        }
+        return *this;
+    }
+
+    // Vector Addition
+    vect operator+(const vect& v) const {
+        vect result(dim);
+        for (int i = 0; i < dim; i++) result.a[i] = a[i] + v.a[i];
+        cout << "Vector addition performed.\n";
+        return result;
+    }
+
+    // Vector Subtraction
+    vect operator-(const vect& v) const {
+        vect result(dim);
+        for (int i = 0; i < dim; i++) result.a[i] = a[i] - v.a[i];
+        cout << "Vector subtraction performed.\n";
+        return result;
+    }
+
+    // Negation
+    vect operator-() const {
+        vect result(dim);
+        for (int i = 0; i < dim; i++) result.a[i] = -a[i];
+        cout << "Vector negation performed.\n";
+        return result;
+    }
+
+    // Dot Product
+    double operator*(const vect& v) const {
+        double result = 0;
+        for (int i = 0; i < dim; i++) result += a[i] * v.a[i];
+        cout << "Vector dot product performed.\n";
+        return result;
+    }
+
+    // Scalar Multiplication
+    vect operator*(double k) const {
+        vect result(dim);
+        for (int i = 0; i < dim; i++) result.a[i] = a[i] * k;
+        cout << "Vector scalar multiplication performed.\n";
+        return result;
+    }
+
+    // Output Operator
+    friend ostream& operator<<(ostream& os, const vect& v) {
+        os << "(";
+        for (int i = 0; i < v.dim; i++) os << v.a[i] << (i < v.dim - 1 ? ", " : "");
+        os << ")";
+        return os;
+    }
+};
+
+// Initialize static counter
+int vect::count = 0;
+
+// Class to represent a matrix
+class matr {
+private:
+    int dim;          // Matrix dimension
+    double** b;       // 2D array for storing matrix elements
+    static int count; // Static counter for tracking objects
+    int num;          // Unique matrix number
+
+public:
+    // Constructor
+    matr(int d = 3) : dim(d) {
+        b = new double*[dim];
+        for (int i = 0; i < dim; i++) {
+            b[i] = new double[dim];
+            for (int j = 0; j < dim; j++) b[i][j] = 0; // Initialize matrix with zero
+        }
+        num = ++count;
+        cout << "Matrix " << num << " created.\n";
+    }
+
+    // Copy Constructor
+    matr(const matr& m) : dim(m.dim) {
+        b = new double*[dim];
+        num = ++count;
+        for (int i = 0; i < dim; i++) {
+            b[i] = new double[dim];
+            for (int j = 0; j < dim; j++) b[i][j] = m.b[i][j];
+        }
+        cout << "Matrix " << num << " copied.\n";
+    }
+
+    // Destructor
+    ~matr() {
+        for (int i = 0; i < dim; i++) delete[] b[i];
+        delete[] b;
+        cout << "Matrix " << num << " destroyed.\n";
+    }
+
+    // Matrix Addition
+    matr operator+(const matr& m) const {
+        matr result(dim);
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < dim; j++)
+                result.b[i][j] = b[i][j] + m.b[i][j];
+        cout << "Matrix addition performed.\n";
+        return result;
+    }
+
+    // Matrix Subtraction
+    matr operator-(const matr& m) const {
+        matr result(dim);
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < dim; j++)
+                result.b[i][j] = b[i][j] - m.b[i][j];
+        cout << "Matrix subtraction performed.\n";
+        return result;
+    }
+
+    // Matrix Multiplication
+    matr operator*(const matr& m) const {
+        matr result(dim);
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < dim; j++)
+                for (int k = 0; k < dim; k++)
+                    result.b[i][j] += b[i][k] * m.b[k][j];
+        cout << "Matrix multiplication performed.\n";
+        return result;
+    }
+
+    // Matrix-Vector Multiplication
+    vect operator*(const vect& v) const {
+        vect result(dim);
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < dim; j++)
+                result = result + v * b[i][j];
+        cout << "Matrix-vector multiplication performed.\n";
+        return result;
+    }
+
+    // Output Operator
+    friend ostream& operator<<(ostream& os, const matr& m) {
+        for (int i = 0; i < m.dim; i++) {
+            for (int j = 0; j < m.dim; j++)
+                os << m.b[i][j] << " ";
+            os << endl;
+        }
+        return os;
+    }
+};
+
+// Initialize static counter
+int matr::count = 0;
+
+// Main function
+int main() {
+    vect v1(3), v2(3);
+    matr m1(3), m2(3);
+
+    cout << "Performing operations..." << endl;
+    vect v3 = v1 + v2;
+    vect v4 = v1 * 2.0;
+    matr m3 = m1 * m2;
+    vect v5 = m1 * v1;
+
+    cout << "v1: " << v1 << endl;
+    cout << "v2: " << v2 << endl;
+    cout << "v3 (v1 + v2): " << v3 << endl;
+    cout << "v4 (v1 * 2): " << v4 << endl;
+    cout << "Matrix m1:\n" << m1;
+    cout << "Matrix m2:\n" << m2;
+    cout << "m3 (m1 * m2):\n" << m3;
+    cout << "v5 (m1 * v1): " << v5 << endl;
+
+    return 0;
+}
