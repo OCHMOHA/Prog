@@ -4,11 +4,11 @@
 struct Node {
     std::string name;
     int age;
-    double salary;
+    int salary;
     Node* next;
 };
 
-void addToBeginning(Node*& head, std::string name, int age, double salary) {
+void addToBeginning(Node*& head, std::string name, int age, int salary) {
     Node* newNode = new Node;
     newNode->name = name;
     newNode->age = age;
@@ -17,7 +17,7 @@ void addToBeginning(Node*& head, std::string name, int age, double salary) {
     head = newNode;
 }
 
-void addToEnd(Node*& head, std::string name, int age, double salary) {
+void addToEnd(Node*& head, std::string name, int age, int salary) {
     Node* newNode = new Node;
     newNode->name = name;
     newNode->age = age;
@@ -35,7 +35,7 @@ void addToEnd(Node*& head, std::string name, int age, double salary) {
     }
 }
 
-void addAfter(Node* head, std::string targetName, std::string name, int age, double salary) {
+void addAfter(Node* head, std::string targetName, std::string name, int age, int salary) {
     Node* temp = head;
     while (temp != nullptr && temp->name != targetName) {
         temp = temp->next;
@@ -50,7 +50,7 @@ void addAfter(Node* head, std::string targetName, std::string name, int age, dou
     }
 }
 
-void addBefore(Node*& head, std::string targetName, std::string name, int age, double salary) {
+void addBefore(Node*& head, std::string targetName, std::string name, int age, int salary) {
     if (head == nullptr) return;
 
     if (head->name == targetName) {
@@ -104,7 +104,7 @@ void printList(Node* head) {
 int main() {
     Node* head = nullptr;
 
-    addToEnd(head, "Alice", 30, 50000);
+    addToEnd(head, "Alice", 30 , 50000);
     addToBeginning(head, "Bob", 25, 45000);
     addAfter(head, "Bob", "Charlie", 28, 48000);
     addBefore(head, "Alice", "David", 35, 52000);
